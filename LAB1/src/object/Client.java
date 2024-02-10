@@ -1,11 +1,17 @@
-package object;
+package LAB1.src.object;
 
 public class Client {
     private int clientId;
     private String firstName;
     private String lastName;
     private String address;
-    private String pasportNumber;
+    private String passportNumber;
+    public Client(String firstName, String lastName, String address, String passportNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.passportNumber = passportNumber;
+    }
 
     public String getLastName() {
         return lastName;
@@ -15,15 +21,15 @@ public class Client {
         return address;
     }
 
-    public String getPasportNumber() {
-        return pasportNumber;
+    public String getpassportNumber() {
+        return passportNumber;
     }
     public String getFirstName() {
         return firstName;
     }
 
-    public void setPasportNumber(String pasportNumber) {
-        this.pasportNumber = pasportNumber;
+    public void setpassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
     }
 
     public void setAddress(String address) {
