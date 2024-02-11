@@ -1,4 +1,4 @@
-package object;
+package LAB1.src.object;
 
 import java.math.BigDecimal;
 
