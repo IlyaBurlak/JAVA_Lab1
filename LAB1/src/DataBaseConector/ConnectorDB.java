@@ -36,9 +36,9 @@ public class ConnectorDB {
         }
     }
 
-    public static void createAccount(Account account) {
+    public static void createAccount(Account account, int bankId) {
         try (Connection con = getConnection()) {
-            String query = "INSERT INTO accounts (client_id, account_type, balance, credit_limit, deposit_amount, interest_rate) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO accounts (client_id, account_type, balance, credit_limit, deposit_amount, interest_rate, bank_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, account.getClientId());
             pst.setString(2, account.getAccountType());
@@ -46,6 +46,7 @@ public class ConnectorDB {
             pst.setBigDecimal(4, account.getCreditLimit());
             pst.setBigDecimal(5, account.getDepositAmount());
             pst.setBigDecimal(6, account.getInterestRate());
+            pst.setInt(7, bankId); // Используйте переданный bankId
 
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected > 0) {
@@ -98,5 +99,36 @@ public class ConnectorDB {
         }
 
         return clientId;
+    }
+    public static void getBankListFromDB() {
+        try (Connection con = getConnection()) {
+            String query = "SELECT name FROM banks";
+            PreparedStatement pst = con.prepareStatement(query);
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                String bankName = rs.getString("name");
+                System.out.println(bankName);
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при получении списка банков из базы данных.");
+            e.printStackTrace();
+        }
+    }
+    public static void getBankListFromDBWithId() {
+        try (Connection con = getConnection()) {
+            String query = "SELECT bank_id, name FROM banks";
+            PreparedStatement pst = con.prepareStatement(query);
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int bankId = rs.getInt("bank_id");
+                String bankName = rs.getString("name");
+                System.out.println( bankId +"." +" " + bankName);
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при получении списка банков из базы данных.");
+            e.printStackTrace();
+        }
     }
 }

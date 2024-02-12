@@ -3,6 +3,8 @@ package LAB1.src.object;
 import java.math.BigDecimal;
 
 public class Account {
+    private int bankId;
+
     private int accountId;
     private int clientId;
     private String accountType;
@@ -74,5 +76,13 @@ public class Account {
 
     public void setAccountId(int accountId) {
         this.accountId = accountId;
+    }
+
+    public int getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
     }
 }
