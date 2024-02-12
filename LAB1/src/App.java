@@ -16,7 +16,7 @@ public class App {
         boolean exit = false;
 
         while (!exit) {
-            System.out.print("В первый раз в нашем банке? (да/нет): ");
+            System.out.print("Вы первый раз в нашем банке? (да/нет): ");
             String firstTimeResponse = scanner.nextLine();
 
             switch (firstTimeResponse.toLowerCase()) {
@@ -31,14 +31,9 @@ public class App {
                     switch (action) {
                         case "1":
                             System.out.print("Введите номер паспорта для входа: ");
-                            String passportNumber1 = scanner.nextLine();
-                            int clientId = ConnectorDB.getClientIdByPassportNumber(passportNumber1);
-                            if (clientId != -1) {
-                                // todo smt
-                                System.out.println("Возвращаемся к выбору действия.");
-                            } else {
-                                System.out.println("Клиент с указанным паспортом не найден.");
-                            }
+                            String passportNumber = scanner.nextLine();
+                            ConnectorDB.displayUserAccounts(passportNumber);
+                            System.out.println("Возвращаемся к выбору действия.");
                             break;
                         case "2":
                             System.out.print("Введите номер паспорта клиента: ");

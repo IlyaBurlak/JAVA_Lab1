@@ -3,6 +3,7 @@ package LAB1.src.DataBaseConector;
 import LAB1.src.object.Account;
 import LAB1.src.object.Client;
 
+import java.math.BigDecimal;
 import java.sql.*;
 
 public class ConnectorDB {
@@ -131,4 +132,25 @@ public class ConnectorDB {
             e.printStackTrace();
         }
     }
+    public static void displayUserAccounts(String passportNumber) {
+        try (Connection con = getConnection()) {
+            String query = "SELECT account_id, account_type, balance FROM accounts WHERE client_id IN (SELECT client_id FROM clients WHERE passport_number = ?)";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, passportNumber);
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int accountId = rs.getInt("account_id");
+                String accountType = rs.getString("account_type");
+                BigDecimal balance = rs.getBigDecimal("balance");
+
+                System.out.println("Аккаунт ID: " + accountId + ", Тип аккаунта: " + accountType + ", Баланс: " + balance);
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при выводе аккаунтов пользователя.");
+            e.printStackTrace();
+        }
+    }
+
 }
