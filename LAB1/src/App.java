@@ -1,5 +1,6 @@
 package LAB1.src;
 
+import LAB1.src.DataBaseConector.AdditionalBankFunctionality;
 import LAB1.src.DataBaseConector.ConnectorDB;
 import LAB1.src.UserFunc.ClientRegistration;
 import LAB1.src.UserFunc.AccountCreation;
@@ -42,6 +43,32 @@ public class App {
         System.out.println("---------------------------");
         System.out.println("WARNING Вы в режиме банка!");
         System.out.println("--------------------------");
+        System.out.println("Выберите действие:");
+        System.out.println("1. Создать новый банк");
+        System.out.println("2. Показать список банков с ID и комиссией");
+        System.out.println("3. Выход");
+
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                System.out.print("Введите название банка: ");
+                String bankName = scanner.nextLine();
+
+                System.out.print("Введите комиссию банка (%): ");
+                double commission = Double.parseDouble(scanner.nextLine());
+
+                AdditionalBankFunctionality.createNewBank(bankName, commission);
+                break;
+            case 2:
+                AdditionalBankFunctionality.displayBankListWithIdAndCommission();
+                break;
+            case 3:
+                System.out.println("До свидания!");
+                break;
+            default:
+                System.out.println("Некорректный выбор. Пожалуйста, выберите действие из списка.");
+        }
     }
 
 
