@@ -40,35 +40,40 @@ public class App {
     }
 
     private static void displayBankMainMenu(Scanner scanner) {
-        System.out.println("---------------------------");
-        System.out.println("WARNING Вы в режиме банка!");
-        System.out.println("--------------------------");
-        System.out.println("Выберите действие:");
-        System.out.println("1. Создать новый банк");
-        System.out.println("2. Показать список банков с ID и комиссией");
-        System.out.println("3. Выход");
+        boolean exitBankMode = false;
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        while (!exitBankMode) {
+            System.out.println("---------------------------");
+            System.out.println("WARNING Вы в режиме банка!");
+            System.out.println("--------------------------");
+            System.out.println("Выберите действие:");
+            System.out.println("1. Создать новый банк");
+            System.out.println("2. Показать список банков с ID и комиссией");
+            System.out.println("3. Выход");
 
-        switch (choice) {
-            case 1:
-                System.out.print("Введите название банка: ");
-                String bankName = scanner.nextLine();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-                System.out.print("Введите комиссию банка (%): ");
-                double commission = Double.parseDouble(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    System.out.print("Введите название банка: ");
+                    String bankName = scanner.nextLine();
 
-                AdditionalBankFunctionality.createNewBank(bankName, commission);
-                break;
-            case 2:
-                AdditionalBankFunctionality.displayBankListWithIdAndCommission();
-                break;
-            case 3:
-                System.out.println("До свидания!");
-                break;
-            default:
-                System.out.println("Некорректный выбор. Пожалуйста, выберите действие из списка.");
+                    System.out.print("Введите комиссию банка (%): ");
+                    double commission = Double.parseDouble(scanner.nextLine());
+
+                    AdditionalBankFunctionality.createNewBank(bankName, commission);
+                    break;
+                case 2:
+                    AdditionalBankFunctionality.displayBankListWithIdAndCommission();
+                    break;
+                case 3:
+                    System.out.println("До свидания!");
+                    exitBankMode = true;
+                    break;
+                default:
+                    System.out.println("Некорректный выбор. Пожалуйста, выберите действие из списка.");
+            }
         }
     }
 
