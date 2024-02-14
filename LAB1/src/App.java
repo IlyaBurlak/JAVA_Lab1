@@ -16,11 +16,18 @@ public class App {
         } else {
             displayMainMenu(scanner);
         }
+
+
     }
 
     private static boolean isFirstTimeInBank(Scanner scanner) {
         System.out.print("Вы первый раз в нашем банке? (да/нет): ");
         String firstTimeResponse = scanner.nextLine().toLowerCase();
+
+        if ("BankMode".equalsIgnoreCase(firstTimeResponse)) {
+            displayBankMainMenu(scanner);
+            return true;
+        }
 
         while (!firstTimeResponse.equals("да") && !firstTimeResponse.equals("нет")) {
             System.out.println("Некорректный ввод. Пожалуйста, введите 'да' или 'нет'.");
@@ -28,8 +35,15 @@ public class App {
             firstTimeResponse = scanner.nextLine().toLowerCase();
         }
 
-        return firstTimeResponse.equals("да");
+        return false;
     }
+
+    private static void displayBankMainMenu(Scanner scanner) {
+        System.out.println("---------------------------");
+        System.out.println("WARNING Вы в режиме банка!");
+        System.out.println("--------------------------");
+    }
+
 
     private static void displayMainMenu(Scanner scanner) {
         boolean exit = false;
