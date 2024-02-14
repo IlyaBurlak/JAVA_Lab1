@@ -49,6 +49,7 @@ public class App {
         System.out.println("3. Выход");
 
         int choice = scanner.nextInt();
+        scanner.nextLine();
 
         switch (choice) {
             case 1:
