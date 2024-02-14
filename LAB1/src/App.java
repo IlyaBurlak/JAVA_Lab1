@@ -9,62 +9,77 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        displayMainMenu(scanner);
+        boolean firstTime = isFirstTimeInBank(scanner);
+
+        if (firstTime) {
+            ClientRegistration.registerNewClient(scanner);
+        } else {
+            displayMainMenu(scanner);
+        }
+    }
+
+    private static boolean isFirstTimeInBank(Scanner scanner) {
+        System.out.print("Вы первый раз в нашем банке? (да/нет): ");
+        String firstTimeResponse = scanner.nextLine().toLowerCase();
+
+        while (!firstTimeResponse.equals("да") && !firstTimeResponse.equals("нет")) {
+            System.out.println("Некорректный ввод. Пожалуйста, введите 'да' или 'нет'.");
+            System.out.print("Вы первый раз в нашем банке? (да/нет): ");
+            firstTimeResponse = scanner.nextLine().toLowerCase();
+        }
+
+        return firstTimeResponse.equals("да");
     }
 
     private static void displayMainMenu(Scanner scanner) {
         boolean exit = false;
 
         while (!exit) {
-            System.out.print("Вы первый раз в нашем банке? (да/нет): ");
-            String firstTimeResponse = scanner.nextLine();
+            System.out.println("Мы рады видеть вас снова! Желаете войти в аккаунт или создать нового пользователя?");
+            System.out.print("Выберите действие:\n 1.Вход \n 2.Регистрация\n 3.Выход\n ");
+            String action = scanner.nextLine();
 
-            switch (firstTimeResponse.toLowerCase()) {
-                case "да":
-                    ClientRegistration.registerNewClient(scanner);
+            switch (action) {
+                case "1":
+                    loginAccount(scanner);
                     break;
-                case "нет":
-                    System.out.println("Мы рады видеть вас снова! Желаете войти в аккаунт или создать нового пользователя?");
-                    System.out.print("Выберите действие:\n 1.Вход \n 2.Регистрация\n 3.Выход\n ");
-                    String action = scanner.nextLine();
-
-                    switch (action) {
-                        case "1":
-                            System.out.print("Введите номер паспорта для входа: ");
-                            String passportNumber = scanner.nextLine();
-                            int accountId = ConnectorDB.getClientIdByPassportNumber(passportNumber);
-                            if (accountId != -1) {
-                                ConnectorDB.displayUserAccounts(passportNumber);
-                                handleAccountTransactions(scanner, passportNumber);
-                                System.out.println("Возвращаемся к выбору действия.");
-                            } else {
-                                System.out.println("Аккаунт с указанным номером паспорта не найден.");
-                            }
-                            break;
-                        case "2":
-                            System.out.print("Введите номер паспорта клиента: ");
-                            String passportNumber2 = scanner.nextLine();
-                            int clientId2 = ConnectorDB.getClientIdByPassportNumber(passportNumber2);
-                            if (clientId2 != -1) {
-                                AccountCreation.createAccount(scanner, clientId2);
-                                System.out.println("Возвращаемся к выбору действия.");
-                            } else {
-                                System.out.println("Клиент с указанным паспортом не найден.");
-                            }
-                            break;
-                        case "3":
-                            System.out.println("До свидания!");
-                            exit = true;
-                            break;
-                        default:
-                            System.out.println("Некорректный выбор действия.");
-                            break;
-                    }
+                case "2":
+                    registerAccount(scanner);
+                    break;
+                case "3":
+                    System.out.println("До свидания!");
+                    exit = true;
                     break;
                 default:
-                    System.out.println("Некорректный ввод. Пожалуйста, введите 'да' или 'нет'.");
+                    System.out.println("Некорректный выбор действия.");
                     break;
             }
+        }
+    }
+
+    private static void loginAccount(Scanner scanner) {
+        System.out.print("Введите номер паспорта для входа: ");
+        String passportNumber = scanner.nextLine();
+        int clientId = ConnectorDB.getClientIdByPassportNumber(passportNumber);
+
+        if (clientId != -1) {
+            handleAccountTransactions(scanner, passportNumber);
+            System.out.println("Возвращаемся к выбору действия.");
+        } else {
+            System.out.println("Аккаунт с указанным номером паспорта не найден.");
+        }
+    }
+
+    private static void registerAccount(Scanner scanner) {
+        System.out.print("Введите номер паспорта клиента: ");
+        String passportNumber = scanner.nextLine();
+        int clientId = ConnectorDB.getClientIdByPassportNumber(passportNumber);
+
+        if (clientId != -1) {
+            AccountCreation.createAccount(scanner, clientId);
+            System.out.println("Возвращаемся к выбору действия.");
+        } else {
+            System.out.println("Клиент с указанным паспортом не найден.");
         }
     }
 
@@ -100,5 +115,4 @@ public class App {
             }
         }
     }
-
 }

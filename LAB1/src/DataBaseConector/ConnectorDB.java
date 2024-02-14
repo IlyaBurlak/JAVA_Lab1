@@ -194,4 +194,24 @@ public class ConnectorDB {
         }
     }
 
+    public static void insertBankToDB(String bankName) {
+        try (Connection con = getConnection()) {
+            String query = "INSERT INTO banks (name) VALUES (?)";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, bankName);
+
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Банк успешно добавлен в базу данных.");
+            } else {
+                System.out.println("Не удалось добавить банк в базу данных.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Ошибка при добавлении банка в базу данных.");
+            e.printStackTrace();
+        }
+    }
+
+
 }
