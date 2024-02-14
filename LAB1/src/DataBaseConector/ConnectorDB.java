@@ -153,4 +153,45 @@ public class ConnectorDB {
         }
     }
 
+    public static void withdrawFromAccount(int accountId, double amount) {
+        try {
+            Connection con = ConnectorDB.getConnection();
+            String query = "UPDATE accounts SET balance = balance - ? WHERE account_id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setBigDecimal(1, BigDecimal.valueOf(amount));
+            pst.setInt(2, accountId);
+
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Со счета " + accountId + " списано " + amount);
+            } else {
+                System.out.println("Не удалось выполнить списание средств.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Ошибка при списании средств со счета.");
+            e.printStackTrace();
+        }
+    }
+    public static void depositToAccount(int accountId, double amount) {
+        try {
+            Connection con = ConnectorDB.getConnection();
+            String query = "UPDATE accounts SET balance = balance + ? WHERE account_id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setBigDecimal(1, BigDecimal.valueOf(amount));
+            pst.setInt(2, accountId);
+
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Средства успешно пополнены на аккаунт " + accountId + " на сумму " + amount);
+            } else {
+                System.out.println("Не удалось пополнить счет.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Ошибка при пополнении счета.");
+            e.printStackTrace();
+        }
+    }
+
 }
