@@ -2,6 +2,7 @@ package LAB1.src.MenuList;
 
 import LAB1.src.DataBaseConector.ConnectorDB;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class AccountTransactionManager {
@@ -10,6 +11,12 @@ public class AccountTransactionManager {
 
         System.out.print("Введите номер аккаунта, с которым хотите взаимодействовать: ");
         int accountId = Integer.parseInt(scanner.nextLine());
+        String accountType = ConnectorDB.getAccountType(accountId);
+
+        if (accountType == null) {
+            System.out.println("Аккаунт с номером " + accountId + " не найден.");
+            return;
+        }
 
         boolean exit = false;
         while (!exit) {
@@ -24,10 +31,23 @@ public class AccountTransactionManager {
                     ConnectorDB.depositToAccount(accountId, depositAmount);
                     break;
                 case "2":
-                    System.out.print("Введите сумму для списания: ");
-                    double withdrawalAmount = Double.parseDouble(scanner.nextLine());
-                    ConnectorDB.withdrawFromAccount(accountId, withdrawalAmount);
+                    if (accountType.equals("Дебетовый счет")) {
+                        BigDecimal currentBalance = ConnectorDB.getAccountBalance(accountId);
+                        System.out.println("Текущий баланс на счете: " + currentBalance);
+
+                        System.out.print("Введите сумму для списания: ");
+                        double withdrawalAmount = Double.parseDouble(scanner.nextLine());
+
+                        if (withdrawalAmount > 0 && BigDecimal.valueOf(withdrawalAmount).compareTo(currentBalance) <= 0) {
+                            ConnectorDB.withdrawFromAccount(accountId, withdrawalAmount);
+                        } else {
+                            System.out.println("Некорректная сумма для списания. Убедитесь, что у вас достаточно средств и введите положительную сумму.");
+                        }
+                    } else {
+                        System.out.println("Вы не можете уйти в минус по балансу на дебетовом счете.");
+                    }
                     break;
+
                 case "3":
                     exit = true;
                     break;

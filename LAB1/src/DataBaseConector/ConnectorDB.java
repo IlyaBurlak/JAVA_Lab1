@@ -194,4 +194,49 @@ public class ConnectorDB {
         }
     }
 
+    public static String getAccountType(int accountId) {
+        String accountType = null;
+
+        try (Connection con = getConnection()) {
+            String query = "SELECT account_type FROM accounts WHERE account_id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, accountId);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                accountType = rs.getString("account_type");
+            } else {
+                System.out.println("Аккаунт с ID " + accountId + " не найден.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при получении типа аккаунта.");
+            e.printStackTrace();
+        }
+
+        return accountType;
+    }
+    public static BigDecimal getAccountBalance(int accountId) {
+        BigDecimal accountBalance = null;
+
+        try (Connection con = getConnection()) {
+            String query = "SELECT balance FROM accounts WHERE account_id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, accountId);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                accountBalance = rs.getBigDecimal("balance");
+            } else {
+                System.out.println("Аккаунт с ID " + accountId + " не найден.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при получении баланса аккаунта.");
+            e.printStackTrace();
+        }
+
+        return accountBalance;
+    }
+
 }
