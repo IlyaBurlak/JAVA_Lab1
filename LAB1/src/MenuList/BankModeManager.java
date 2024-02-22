@@ -1,6 +1,7 @@
 package LAB1.src.MenuList;
 
 import LAB1.src.DataBaseConector.AdditionalBankFunctionality;
+import LAB1.src.DataBaseConector.ConnectorDB;
 
 import java.util.Scanner;
 
@@ -33,7 +34,9 @@ public class BankModeManager {
             System.out.println("Выберите действие:");
             System.out.println("1. Создать новый банк");
             System.out.println("2. Показать список банков с ID и комиссией");
-            System.out.println("3. Выход");
+            System.out.println("3. Начислить дивиденды");
+            System.out.println("4. Выход");
+
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -52,9 +55,14 @@ public class BankModeManager {
                     AdditionalBankFunctionality.displayBankListWithIdAndCommission();
                     break;
                 case 3:
+                    ConnectorDB.updateAccountBalancesWithDividends();
+                    System.out.println("Дивиденды успешно начислены по всем счетам банков.");
+                    break;
+                case 4:
                     System.out.println("До свидания!");
                     exitBankMode = true;
                     break;
+
                 default:
                     System.out.println("Некорректный выбор. Пожалуйста, выберите действие из списка.");
             }

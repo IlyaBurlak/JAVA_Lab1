@@ -47,7 +47,7 @@ public class ConnectorDB {
             pst.setBigDecimal(4, account.getCreditLimit());
             pst.setBigDecimal(5, account.getDepositAmount());
             pst.setBigDecimal(6, account.getInterestRate());
-            pst.setInt(7, bankId); // Используйте переданный bankId
+            pst.setInt(7, bankId);
 
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected > 0) {
@@ -71,7 +71,6 @@ public class ConnectorDB {
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 int clientId = rs.getInt("client_id");
-                // Дополнительная логика для входа в аккаунт
                 System.out.println("Вход в аккаунт успешно выполнен для клиента с ID: " + clientId);
             } else {
                 System.out.println("Клиент с указанным паспортным номером не найден.");
@@ -237,6 +236,18 @@ public class ConnectorDB {
         }
 
         return accountBalance;
+    }
+    public static void updateAccountBalancesWithDividends() {
+        try (Connection con = getConnection()) {
+            String query = "UPDATE accounts SET balance = balance + (balance * (SELECT SUM(dividends) FROM banks WHERE bank_id = bank_id))";
+            PreparedStatement pst = con.prepareStatement(query);
+
+            int rowsAffected = pst.executeUpdate();
+            System.out.println("Дивиденды успешно начислены по всем счетам.");
+        } catch (SQLException e) {
+            System.out.println("Ошибка при начислении дивидендов по счетам.");
+            e.printStackTrace();
+        }
     }
 
 }
