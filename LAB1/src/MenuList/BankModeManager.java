@@ -2,6 +2,7 @@ package LAB1.src.MenuList;
 
 import LAB1.src.DataBaseConector.AdditionalBankFunctionality;
 import LAB1.src.DataBaseConector.ConnectorDB;
+import LAB1.src.UserFunc.ClientRegistration;
 
 import java.util.Scanner;
 
@@ -10,15 +11,14 @@ public class BankModeManager {
         System.out.print("Вы первый раз в нашем банке? (да/нет): ");
         String firstTimeResponse = scanner.nextLine().toLowerCase();
 
-        if ("BankMode".equalsIgnoreCase(firstTimeResponse)) {
-            displayBankMainMenu(scanner);
-            return true;
+        if ("да".equals(firstTimeResponse)) {
+            ClientRegistration.registerNewClient(scanner);
+            return false;
         }
 
-        while (!firstTimeResponse.equals("да") && !firstTimeResponse.equals("нет")) {
+        if (!"нет".equals(firstTimeResponse)) {
             System.out.println("Некорректный ввод. Пожалуйста, введите 'да' или 'нет'.");
-            System.out.print("Вы первый раз в нашем банке? (да/нет): ");
-            firstTimeResponse = scanner.nextLine().toLowerCase();
+            return isFirstTimeInBank(scanner);
         }
 
         return false;

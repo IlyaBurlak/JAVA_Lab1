@@ -1,6 +1,5 @@
 package LAB1.src;
 
-
 import LAB1.src.MenuList.BankModeManager;
 import LAB1.src.MenuList.UserAccountManager;
 import LAB1.src.UserFunc.ClientRegistration;
