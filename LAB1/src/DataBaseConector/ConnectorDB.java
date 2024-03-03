@@ -153,6 +153,10 @@ public class ConnectorDB {
     }
 
     public static void withdrawFromAccount(int accountId, double amount) {
+        if (amount < 0) {
+            System.out.println("Ошибка: Нельзя снять со счета отрицательную сумму.");
+            return;
+        }
         try {
             Connection con = ConnectorDB.getConnection();
             String query = "UPDATE accounts SET balance = balance - ? WHERE account_id = ?";
@@ -173,6 +177,10 @@ public class ConnectorDB {
         }
     }
     public static void depositToAccount(int accountId, double amount) {
+        if (amount < 0) {
+            System.out.println("Ошибка: Нельзя пополнять счет отрицательной суммой.");
+            return;
+        }
         try {
             Connection con = ConnectorDB.getConnection();
             String query = "UPDATE accounts SET balance = balance + ? WHERE account_id = ?";

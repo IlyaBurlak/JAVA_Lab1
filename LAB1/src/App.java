@@ -11,13 +11,20 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         BankModeManager bankModeManager = new BankModeManager();
 
-        boolean firstTime = bankModeManager.isFirstTimeInBank(scanner);
+        System.out.print("Введите пароль, чтобы получить доступ к банковскому режиму : \nИли нажмите ( Enter )что бы пропустить:");
+        String userInput = scanner.nextLine();
 
-        if (firstTime) {
-            ClientRegistration.registerNewClient(scanner);
+        if ("BankMode".equalsIgnoreCase(userInput)) {
+            bankModeManager.displayBankMainMenu(scanner);
         } else {
-            UserAccountManager userAccountManager = new UserAccountManager();
-            userAccountManager.displayMainMenu(scanner);
+            boolean firstTime = bankModeManager.isFirstTimeInBank(scanner);
+
+            if (firstTime) {
+                ClientRegistration.registerNewClient(scanner);
+            } else {
+                UserAccountManager userAccountManager = new UserAccountManager();
+                userAccountManager.displayMainMenu(scanner);
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ public class AccountTransactionManager {
                     ConnectorDB.depositToAccount(accountId, depositAmount);
                     break;
                 case "2":
-                    if (accountType.equals("Дебетовый счет")) {
+                    if (accountType.equals("Дебетовый счет") && accountType.equals("Кредитный счет")) {
                         BigDecimal currentBalance = ConnectorDB.getAccountBalance(accountId);
                         System.out.println("Текущий баланс на счете: " + currentBalance);
 
@@ -44,7 +44,7 @@ public class AccountTransactionManager {
                             System.out.println("Некорректная сумма для списания. Убедитесь, что у вас достаточно средств и введите положительную сумму.");
                         }
                     } else {
-                        System.out.println("Вы не можете уйти в минус по балансу на дебетовом счете.");
+                        System.out.println("Вы не можете симать с эттого типа счета. ");
                     }
                     break;
 
